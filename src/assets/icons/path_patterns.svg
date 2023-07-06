@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="900" viewBox="0 0 700 600" style="border: 1px solid gray">
+
+<title>SVG path patterns</title>
+
+<!-- Each pattern is a working example along with the `<defs>` section below.
+     
+     To scale a pattern, multiply all numbers in attributes representing distances by the scale factor
+     (e.g. `stroke-width`, `stroke-dasharray`, `stroke-dashoffset`, `stdDeviation`)
+     and if present, `baseFrequency` should be divided by that factor. If the result is somewhat cropped,
+     you need to enlarge some filter/mask region from the default `x="-10%" y="-10%" width="120%" height="120%"`
+     (e.g. by 10% to each side to `x="-20%" y="-20%" width="140%" height="140%"`).
+-->
+
+<defs>
+	<path id="path"        d="M 30,100 H 60 C 160,100 60,20 160,20 C 260,20 300,20 160,70 L 200,100 L 240,60 Q 280,20 340,75" fill="none"/>
+	<path id="closed-path" d="M 30,100 H 60 C 160,100 60,20 160,20 C 260,20 300,20 160,70 L 200,100 L 240,60 Q 280,20 340,75 L 400,130 L 200,200 L 0,100 Z"/>
+	<!-- `#closed-path` is an extended `#path` that is closed and keeps straight some distance over
+             the ends of `#path`. It is necessary for patterns that aren't symmetric (e.g. `#spring`, `#ear`),
+             because its filled region can mask one side of the `#path` (see `#side1` and `#side2` below).
+             This masking will cause problems if the `#path` intersects itself.
+	-->
+
+	<mask id="side1">
+		<use href="#closed-path" fill="white" stroke="none"/>
+	</mask>
+
+	<mask id="side2">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#closed-path" fill="black" stroke="none"/>
+	</mask>
+</defs>
+
+<g id="chain" transform="translate(0 0)" stroke-linecap="round" stroke-linejoin="round" stroke="#000c">
+	<mask id="chain-holes">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="4" stroke-dasharray="6 14" stroke-dashoffset="7"/>
+	</mask>
+
+	<use href="#path" stroke-width="8" stroke-dasharray="6 14" stroke-dashoffset="7" mask="url(#chain-holes)"/>
+	<use href="#path" stroke-width="2" stroke-dasharray="12 8"/>
+</g>
+
+<g id="track" transform="translate(350 0)" stroke-linejoin="round">
+	<mask id="between-rails">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="4" stroke-linecap="square"/>
+	</mask>
+
+	<use href="#path" stroke="#c40" stroke-width="8" stroke-dasharray="2 2"/>
+	<use href="#path" stroke="#444" stroke-width="6" mask="url(#between-rails)"/>
+</g>
+
+<g id="road" transform="translate(0 150)" stroke-linejoin="round">
+	<use href="#path" stroke-width="8" stroke="#444"/>
+	<use href="#path" stroke-width="1" stroke-dasharray="2 2" stroke="#fff"/>
+</g>
+
+<g id="spring" transform="translate(350 150)" stroke-linecap="round" stroke="black">
+	<mask id="small-hole">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="4" stroke-dasharray="0 8" stroke-dashoffset="4"/>
+	</mask>
+
+	<mask id="big-hole1">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="12" stroke-dasharray="0 16"/>
+	</mask>
+
+	<mask id="big-hole2">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="12" stroke-dasharray="0 16" stroke-dashoffset="8"/>
+	</mask>
+
+	<g mask="url(#side2)">
+		<use href="#path" stroke-width="5" stroke-dasharray="0 8" stroke-dashoffset="4" mask="url(#small-hole)"/>
+	</g>
+
+	<g mask="url(#side1)">
+		<use href="#path" stroke-width="13" stroke-dasharray="0 16" mask="url(#big-hole1)"/>
+		<use href="#path" stroke-width="13" stroke-dasharray="0 16" stroke-dashoffset="8" mask="url(#big-hole2)"/>
+	</g>
+</g>
+
+<g id="arrows" transform="translate(0 300)" stroke-linejoin="bevel" stroke="black">
+	<filter id="smooth-arrows">
+		<feGaussianBlur stdDeviation="0.75" in="SourceGraphic" result="blur"/>
+		<feComponentTransfer in="blur">
+			<feFuncA type="discrete" tableValues="0 1"/>
+		</feComponentTransfer>
+	</filter>
+
+	<g filter="url(#smooth-arrows)">
+		<use href="#path" stroke-width="7" stroke-dasharray="1 12"/>
+		<use href="#path" stroke-width="4" stroke-dasharray="3 10"/>
+		<use href="#path" stroke-width="1" stroke-dasharray="5 8"/>
+	</g>
+
+	<use href="#path" stroke-width="1" stroke-dasharray="5 8" stroke-dashoffset="4"/>
+</g>
+
+<g id="ear" transform="translate(350 300)" stroke-linejoin="round">
+	<filter id="smooth-flowers">
+		<feGaussianBlur stdDeviation="0.5" in="SourceGraphic" result="blur"/>
+		<feComponentTransfer in="blur">
+			<feFuncA type="discrete" tableValues="0 1"/>
+		</feComponentTransfer>
+	</filter>
+	<mask id="cut1">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="5" stroke-dasharray="0 10" stroke-linecap="round"/>
+	</mask>
+	<mask id="cut2">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="5" stroke-dasharray="0 10" stroke-dashoffset="5" stroke-linecap="round"/>
+	</mask>
+
+	<g mask="url(#side1)" filter="url(#smooth-flowers)">
+		<g mask="url(#cut1)">
+			<use href="#path" stroke="#ff0" stroke-width="8" stroke-dasharray="5 5" stroke-dashoffset="5"/>
+			<use href="#path" stroke="#af0" stroke-width="8" stroke-dasharray="0 10" stroke-dashoffset="5" stroke-linecap="round"/>
+		</g>
+		<use href="#path" stroke="#0c0" stroke-width="4" stroke-dasharray="0 10" stroke-dashoffset="8" stroke-linecap="round"/>
+	</g>
+
+	<g mask="url(#side2)" filter="url(#smooth-flowers)">
+		<g mask="url(#cut2)">
+			<use href="#path" stroke="#ff0" stroke-width="8" stroke-dasharray="5 5"/>
+			<use href="#path" stroke="#af0" stroke-width="8" stroke-dasharray="0 10" stroke-linecap="round"/>
+		</g>
+		<use href="#path" stroke="#0c0" stroke-width="4" stroke-dasharray="0 10" stroke-dashoffset="3" stroke-linecap="round"/>
+	</g>
+
+	<use href="#path" stroke="#0c0" stroke-width="1"/>
+	
+</g>
+
+<g id="film" transform="translate(0 450)" stroke-linejoin="bevel">
+	<filter id="film-noise">
+		<feTurbulence baseFrequency="0.2" type="fractalNoise" numOctaves="2" result="noise"/>
+		<feColorMatrix in="noise" result="alpha-noise" type="matrix"
+        		values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   -1.4875 -5.0078 -0.5047 0 4"/>
+		<feComposite in="SourceGraphic" in2="alpha-noise" operator="out"/>
+	</filter>
+
+	<mask id="film-holes">
+		<rect x="0%" y="0%" width="100%" height="100%" fill="white"/>
+		<use href="#path" stroke="black" stroke-width="9" stroke-dasharray="0.75 1"/>
+		<use href="#path" stroke="white" stroke-width="7"/>
+	</mask>
+
+	<g opacity="0.9" mask="url(#film-holes)">
+		<use href="#path" stroke="#953" stroke-width="10"/>
+		<use href="#path" stroke="black" stroke-width="6" stroke-dasharray="8 1" filter="url(#film-noise)"/>		 
+	</g>	
+</g>
+
+</svg>

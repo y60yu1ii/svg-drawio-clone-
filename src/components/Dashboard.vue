@@ -2,9 +2,9 @@
 import { ref, Ref } from "vue";
 // import { usePIDWebSocket } from "../store/comm";
 // import { connectPIDSocket } from "../store/api";
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 // const wsPIDStore = usePIDWebSocket();
-const { payload } = storeToRefs(wsStore);
+// const { payload } = storeToRefs(wsStore);
 
 interface Valve {
   x: number;
@@ -289,6 +289,7 @@ const dblClick = function (e: any) {
 
 const mouseup = function (e: any) {
   const id = e.target.id;
+  console.log(id);
   //done or giving up events
   // regular draging
   const dv = valves.value.find((e: Valve) => {
@@ -556,33 +557,33 @@ const popDownloadFile = function (name: string, data: string) {
 };
 
 /* Websocket */
-interface PIDSource {
-  valves: ValveData[];
-}
-interface ValveData {
-  id: string;
-  value: number;
-  unit: string;
-}
-const valveDatList: Ref<ValveData[]> = ref([]);
-const updatePeriod = 500; // output Chart time
-var repeatedUpdateChart: ReturnType<typeof setTimeout>;
-const updateDataSource = function () {
-  clearTimeout(repeatedUpdateChart);
-  let obj: PIDSource = JSON.parse(wsPIDStore.payload || "{}");
-  if (obj.valves != undefined) {
-    valveDatList.value = obj.valves;
-    valveDatList.value.forEach((e: ValveData, idx: number) => {
-      const v = valves.value.find((e, i) => {
-        return i == idx;
-      });
-      if (v != null) {
-        v.value = e.value;
-      }
-    });
-  }
-  repeatedUpdateChart = setTimeout(updateDataSource, updatePeriod);
-};
+// interface PIDSource {
+//   valves: ValveData[];
+// }
+// interface ValveData {
+//   id: string;
+//   value: number;
+//   unit: string;
+// }
+// const valveDatList: Ref<ValveData[]> = ref([]);
+// const updatePeriod = 500; // output Chart time
+// var repeatedUpdateChart: ReturnType<typeof setTimeout>;
+// const updateDataSource = function () {
+//   clearTimeout(repeatedUpdateChart);
+//   let obj: PIDSource = JSON.parse(wsPIDStore.payload || "{}");
+//   if (obj.valves != undefined) {
+//     valveDatList.value = obj.valves;
+//     valveDatList.value.forEach((e: ValveData, idx: number) => {
+//       const v = valves.value.find((e, i) => {
+//         return i == idx;
+//       });
+//       if (v != null) {
+//         v.value = e.value;
+//       }
+//     });
+//   }
+//   repeatedUpdateChart = setTimeout(updateDataSource, updatePeriod);
+// };
 </script>
 
 <template>
@@ -790,12 +791,12 @@ const updateDataSource = function () {
       <el-button class="btn" type="warning" @click="addRandomComponents"
         >Add Random Valve</el-button
       >
-      <el-button class="btn" type="primary" @click="connectPIDSocket"
+      <!-- <el-button class="btn" type="primary" @click="connectPIDSocket"
         >Connect Data Source</el-button
       >
       <el-button class="btn" type="primary" @click="updateDataSource"
         >Update Data</el-button
-      >
+      > -->
     </el-aside>
   </el-container>
 </template>
