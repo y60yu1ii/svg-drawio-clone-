@@ -1,0 +1,29 @@
+{
+  "name": "svg-drawio-clone",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "author": "y60yu1ii",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "echarts": "^5.4.2",
+    "element-plus": "^2.3.7",
+    "pinia": "^2.1.4",
+    "sass": "^1.63.6",
+    "simple-keyboard": "^3.6.21",
+    "vue": "^3.2.47",
+    "vue-echarts": "^6.6.0",
+    "vue-router": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/echarts": "^4.9.18",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9",
+    "vue-tsc": "^1.8.3"
+  }
+}
